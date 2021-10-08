@@ -200,3 +200,27 @@ auto resetV = [&v](const auto& newValue){v = newValue;};
 resetV({1,2,3});        //ERROR!
 
 ```
+
+# 10.8
+1. 引用或者指针
+  - 去除引用属性
+  - 模式匹配
+2. 通用引用
+  - 实参为左值，T和param均为左值引用
+  - 实参为右值，模式匹配
+3. 既不是指针也不是引用
+  - 去除引用属性
+  - 去除const属性
+  - 去除volatile属性
+4. 数组实参
+  - 形参为普通参数时，数组名退化为普通指针
+  - 形参为引用时，数组名表示数组
+```cpp
+template<typename T, std::size_t N>
+constexpr std::size_t AS(T(&)[N]){
+  return N;
+}
+int vals[] = {1, 2, 3, 4};
+int newVals[AS(vals)];
+
+```
