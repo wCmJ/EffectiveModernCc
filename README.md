@@ -1,2 +1,2 @@
 # EffictiveMordernCc
-# Record the progress of learn Effictive Mordern 
+Record the progress of learn Effictive Mordern 
