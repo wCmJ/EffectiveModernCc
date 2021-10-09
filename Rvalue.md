@@ -23,6 +23,8 @@ public:
                 expression
          glvalue          rvalue
    lvalue         xvalue         prvalue        
+
+
 glvalue: a generalized lvalue
 prvalue: a pure rvalue
 xvalue: an expiring lvalue
