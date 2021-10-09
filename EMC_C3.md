@@ -36,12 +36,40 @@ Widget w;
 const Widget& cw = w;
 auto my_widget1 = cw;             // my_widget1类型为Widget
 decltype(auto) my_widget2 = cw;   // my_widget2类型为const Widget&
-// 容器通过
+// 容器通过传引用的方式传递非常量左值引用，因为返回一个引用运行用户可以修改容器
+// 这意味着不能给这个函数传递右值容器，右值不能被绑定到左值引用上，除非是一个const左值引用
+// 为了支持左值和右值，可以使用：1. 重载，需要同时维护两个函数；2. 通用引用
+// V4 最终C++14版本
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container&& c, Index i){
+  return std::forward<Container>(c)[i];
+}
+// V5 最终C++11版本
+template<typename Container, typename Index>
+auto authAndAccess(Container&& c, Index i) -> decltype(std::forward<Container>(c)[i]){
+  return std::forward<Container>(c)[i];
+}
 
+// 将decltype应用于变量名会产生该变量名的声明类型
+// 对于比单纯的变量名更复杂的左值表达式，decltype可以确保报告的类型始终是左值引用
+// 也就是说，如果一个不是单纯变量名的左值表达式的类型是T，那么decltype会把这个表达式的类型报告为T&
 
+int x = 0;
+decltype(x) == int
+decltype((x)) == int&
 
+decltype(auto) f1(){
+  int x = 0;
+  return x;             // decltype(x) is int
+}
 
-
-
-
+decltype(auto) f2(){
+  int x = 0;
+  return (x);           // decltype((x)) is int&
+}
 ```
+
+- decltype总是不加修改的产生变量或者表达式的类型
+- 对于T类型的不是单纯的变量名的左值表达式，decltype总是产出T的引用即T&
+- C++14支持decltype(auto)，就像auto引用，推导出类型，但是它使用decltype的规则进行推导
+
