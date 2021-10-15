@@ -114,11 +114,33 @@ shared_from_this
 
 ## weak_ptr
 - 一个真正的智能指针应该跟踪所指对象，在指向的对象不存在时知晓
-  
-  
-  
-  
-  
+```cpp
+auto spw = std::make_shared<Widget>();
+std:weak_ptr<Widget> wpw(spw);
+spw = nullptr;
+if(wpw.expired())...
+```  
+
+- 从weak_ptr上创建shared_ptr
+    1. auto spw2 = wpw.lock();  // 如果wpw过期，spw2为空
+    2. std::shared_ptr<Widget> spw3(wpw);   // 如果wpw过期，抛出std::bad_weak_ptr
+    
+    
+    
+## make_shared, make_unique
+```cpp
+int computePriority();
+void processWidget(std::shared_ptr<Widget> spw, int priority);
+processWidget(std::shared_ptr<Widget>(new Widget), computePriority());  // 潜在的资源泄漏：new Widget在shared_ptr构造函数之前执行，computePriority执行时机不确定且可能抛出异常
+processWidget(std::make_shared<Widget>(), computePriority());           // 没有潜在的资源泄漏    
+```    
+
+- 效率提升
+    1. std::shared_ptr<Widget> spw(new Widget());   // 执行了两次内存分配：new为Widget分配一次内存，shared_ptr构造函数为控制块再分配一次内存
+    2. auto spw = std::make_shared<Widget>();       // 执行一次内存分配：make_shared分配一块内存，同时容纳Widget对象和控制块，减少了程序的静态大小
+- 限制
+    1. make函数都不允许指定自定义删除器
+    2. 
   
   
   
