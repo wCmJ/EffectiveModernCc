@@ -1,3 +1,30 @@
+## 大小测试
+std::cout<<"sizeof(std::unique_ptr<double>): "<<sizeof(std::unique_ptr<double>)<<std::endl;
+std::cout<<"sizeof(std::unique_ptr<double, void(*)(double*)>): "<<sizeof(std::unique_ptr<double, void(*)(double*)>)<<std::endl;
+std::cout<<"sizeof(std::unique_ptr<double, std::function<void(double*)>>): "<<sizeof(std::unique_ptr<double, std::function<void(double*)>>)<<std::endl;
+std::cout<<"sizeof(std::unique_ptr<double, CustomDeleter>): "<<sizeof(std::unique_ptr<double, CustomDeleter>)<<std::endl;
+
+### Linux x86_64，g++ 4.8.5  
+sizeof(std::unique_ptr<double>): 8
+sizeof(std::unique_ptr<double, void(*)(double*)>): 16
+sizeof(std::unique_ptr<double, std::function<void(double*)>>): 40
+sizeof(std::unique_ptr<double, CustomDeleter>): 8
+
+### Mac
+sizeof(std::unique_ptr<double>): 8
+sizeof(std::unique_ptr<double, void(*)(double*)>): 16
+sizeof(std::unique_ptr<double, std::function<void(double*)>>): 64
+sizeof(std::unique_ptr<double, CustomDeleter>): 8  
+
+
+### 结论
+- 使用默认删除器的unique_ptr和原始指针大小一致
+- 使用Struct仿函数方式的unique_ptr和原始指针大小一致
+- 使用不捕获参数的lambda方式的unique_ptr和原始指针大小一致
+- 使用std::function形式的unique_ptr比原始指针在Linux上多4个指针大小，在Mac上多7个指针大小
+
+- unique_ptr需要存储deleter function地址  
+
 ## auto_ptr
 - 唯一使用场景：C++98编译器。使用unique_ptr替换auto_ptr
 
