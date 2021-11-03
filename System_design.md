@@ -24,3 +24,20 @@
     - weighted round robin method
     - IP Hash
 - LB can be a single point of failure, to overcome this, a second LB can be connected to the first to form a cluster
+
+## Caching
+- Application server cache
+- Content Distribution Network(CDN)
+  1. 
+- Cache invalidation
+  - Solve cache invalidation
+    1. write-through cache
+    2. write-around cache
+    3. write-back cache
+- Cache eviction policies
+  1. FIFO
+  2. LIFO
+  3. LRU
+  4. MRU
+  5. LFU
+  6. RR
