@@ -7,6 +7,103 @@
 
 ### 25
 
+### LFU
+```cpp
+class LeastFrequentlyUsed {
+public:
+  LeastFrequentlyUsed(int capacity) : capacity_(capacity) {}
+  int get(int key) {
+    // if existed return the value of key, otherwise return -1
+    if (key_it_value_cnt.count(key) == 0) {
+      return -1;
+    }
+    int cnt = key_it_value_cnt[key].second.second;
+    auto it = key_it_value_cnt[key].first;
+    cnt_keys_[cnt].erase(it);
+    cnt_keys_[cnt + 1].push_front(key);
+    key_it_value_cnt[key].first = cnt_keys_[cnt + 1].begin();
+    key_it_value_cnt[key].second.second = cnt + 1;
+  }
+  void put(int key, int value) {
+    // if key existed then modify the value of it, if not existed, insert
+    // (key, value) to container. when container is full remove the least
+    // frequently item
+    // TODO: corner case
+    if (capacity_ == 0) {
+      return;
+    }
+    if (key_it_value_cnt.count(key) == 0) {
+      // not existed
+      if (key_it_value_cnt.size() >= capacity_) {
+        for (auto &node : cnt_keys_) {
+          if (!node.second.empty()) {
+            int del_key = node.second.back();
+            key_it_value_cnt.erase(del_key);
+            node.second.pop_back();
+            break;
+          }
+        }
+      }
+      cnt_keys_[1].push_front(key);
+      key_it_value_cnt[key].first = cnt_keys_[1].begin();
+      key_it_value_cnt[key].second.first = value;
+      key_it_value_cnt[key].second.second = 1;
+    } else {
+      get(key);
+      key_it_value_cnt[key].second.first = value;
+    }
+  }
+
+private:
+  map<int, list<int>> cnt_keys_;
+  unordered_map<int, std::pair<list<int>::iterator, std::pair<int, int>>>
+      key_it_value_cnt;
+  int capacity_;
+};
+```
+
+### LRU
+```cpp
+class LeastRecentlyUsed {
+public:
+  LeastRecentlyUsed(int capacity) : capacity_(capacity) {}
+  int get(int key) {
+    if (key_it_value_.count(key) == 0) {
+      return -1;
+    }
+    keys_.erase(key_it_value_[key].first);
+    keys_.push_front(key);
+    key_it_value_[key].first = keys_.begin();
+    return key_it_value_[key].second;
+  }
+
+  void put(int key, int value) {
+    if (0 == capacity_) {
+      return;
+    }
+
+    if (-1 != get(key)) {
+      key_it_value_[key].second = value;
+      return;
+    }
+
+    if (key_it_value_.size() == capacity_) {
+      key_it_value_.erase(keys_.back());
+      keys_.pop_back();
+    }
+    keys_.push_front(key);
+    key_it_value_[key].first = keys_.begin();
+    key_it_value_[key].second = value;
+  }
+
+private:
+  list<int> keys_;
+  unordered_map<int, std::pair<list<int>::iterator, int>> key_it_value_;
+  int capacity_;
+};
+
+
+```
 ## 11.4
 ### 30
 ```cpp
