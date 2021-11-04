@@ -310,6 +310,60 @@ int totalNQueens(int n) {
   return ans;
 }
 ```
+### 60
+```cpp
+// 排列序列，1 <= n <= 9, 1 <= k <= n!
+// time: O(n^2) space: O(n)
+int oneToN(int n){
+  int ans = 1;
+  for(int i = 2;i<=n;++i){
+    ans *= i;
+  }
+  return ans;
+}
+
+string getPermutation(int n, int k) {
+  string ans(n, ' ');
+  vector<int> used(n + 1, false);
+  for(int i = 0;i<n;++i){
+    int count = oneToN(n - 1 - i);
+    int times = (k - 1)/count + 1;
+    int val = 0;
+    for(int j = 1;j< n + 1;++j){
+      if(used[j] == 0){
+        times--;
+      }
+      if(times == 0){
+        used[j] = true;
+        ans[i] = (char)('0' + j);
+        break;
+      }
+    }
+    k -= count * ((k - 1)/count);
+  }
+  return ans;
+}
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
