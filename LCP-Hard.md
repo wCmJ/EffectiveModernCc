@@ -528,16 +528,68 @@ bool isNumber(string s) {
   }
   return isInt(s, 0, ls - 1) || isFloat(s, 0, ls - 1);
 }
+```
 
-
+### 68
+```cpp
+// 文本左右对齐
+vector<string> fullJustify(vector<string> &words, int maxWidth) {
+    // 11.4
+    {
+      vector<string> ans;
+      for (int i = 0; i < words.size();) {
+        int end = i, cur_len = 0, word_lens = 0;
+        while (end < words.size()) {
+          if (words[end].size() + cur_len <= maxWidth) {
+            cur_len += words[end].size() + 1;
+            word_lens += words[end].size();
+            ++end;
+          } else {
+            break;
+          }
+        }
+        if (cur_len == 0) {
+          return vector<string>();
+        }
+        std::cout << "end: " << end << std::endl;
+        int word_cnt = end - i;
+        int space_cnt = maxWidth - word_lens;
+        if (word_cnt == 1) {
+          ans.push_back(words[i] + string(space_cnt, ' '));
+        } else {
+          if (end == words.size()) {
+            string tmp;
+            for (int j = i; j < end - 1; ++j) {
+              tmp += words[j] + " ";
+            }
+            tmp += words[end - 1];
+            if (maxWidth > tmp.size()) {
+              tmp += string(maxWidth - tmp.size(), ' ');
+            }
+            ans.push_back(tmp);
+          } else {
+            int common_cnt = space_cnt / (word_cnt - 1);
+            int left_cnt = space_cnt % (word_cnt - 1);
+            string tmp;
+            for (int j = i; j < end - 1; ++j) {
+              tmp += words[j] + (common_cnt > 0 ? string(common_cnt, ' ') : "");
+              tmp += (j - i + 1 <= left_cnt ? " " : "");
+            }
+            tmp += words[end - 1];
+            ans.push_back(tmp);
+          }
+        }
+        i = end;
+      }
+      return ans;
+    }
+  }
 
 
 
 
 
 ```
-
-
 
 
 
