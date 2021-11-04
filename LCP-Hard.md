@@ -11,7 +11,7 @@
 ### 30
 ```cpp
 // 串联所有单词的子串
-
+// time: O(n*m), space: O(m)
 void CheckIndexValid(const string &s, int i,
                      unordered_map<string, int> word_cnt, vector<int> &ans,
                      int word_len, int word_len_sum) {
@@ -77,6 +77,7 @@ vector<int> findSubstring(string s, vector<string> &words) {
 ### 32
 ```cpp
 // 最长有效括号
+// time: O(n), space: O(n)
 int lc_32_longestValidParentheses(string s) {
   int ans = 0, len = s.size();
   vector<int> dp(len, 0);
@@ -96,6 +97,7 @@ int lc_32_longestValidParentheses(string s) {
 ### 37
 ```cpp
 // 解数独
+// time: 9^n space: O(1)
 bool rowValid(vector<vector<char>> &board, int i, int j) {
   for (int k = 0; k < 9; ++k) {
     if (k != j && board[i][k] == board[i][j]) {
@@ -171,6 +173,7 @@ void lc_37_solveSudoku(vector<vector<char>> &board) {
 ### 41
 ```cpp
 // 第一个缺失的正数
+// time: O(n), space: O(1)
 int lc_41_firstMissingPositive(vector<int> &nums) {
   int len = nums.size();
   for (int i = 0; i < len;) {
@@ -195,6 +198,7 @@ int lc_41_firstMissingPositive(vector<int> &nums) {
 ### 44
 ```cpp
 // 通配符匹配：？any single char，* any string
+// time: O(n*m) space: O(n*m)
 bool lc_44_isMatch(string s, string p) {
   if (p.empty())
     return s.empty();
@@ -226,6 +230,7 @@ bool lc_44_isMatch(string s, string p) {
 ### 51
 ```cpp
 // N皇后
+// time: O(n^n) space: O(n)
 int solveNQueensIndex(const string &s) {
   int ans = -1;
   for (int i = 0; i < s.size(); ++i) {
