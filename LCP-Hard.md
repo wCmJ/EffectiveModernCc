@@ -344,13 +344,101 @@ string getPermutation(int n, int k) {
   return ans;
 }
 
+```
+### 65
+```cpp
+// 有效数字按顺序
+// 1. 小数或整数；2. 一个'e'或'E'，后面跟着一个整数
+/* 小数分为以下几个部分：
+  1. 一个符号字符（可选）；
+  2. 下述格式之一:
+    - 至少一个数字，后面跟着一个'.'
+    - 至少一位数字，后面跟着一个点 '.' ，后面再跟着至少一位数字
+    - 一个点 '.' ，后面跟着至少一位数字
+*/
+/* 整数按顺序可以分为以下几个部分：
+  1. 一个符号字符（'+' 或 '-'）可选
+  2. 至少一位数字
+*/
+/*
+部分有效数字列举如下：
+["2", "0089", "-0.1", "+3.14", "4.", "-.9", "2e10", "-90E3", "3e+7", "+6e-1", "53.5e93", "-123.456e789"]
+
+部分无效数字列举如下：
+["abc", "1a", "1e", "e3", "99e2.5", "--6", "-+3", "95a54e53"]
+*/
+
+
+bool isInt(const string &s, int start, int end) {
+  if (start > end)
+    return false;
+  int dot_count = 0, num_count = 0;
+  if (s[start] == '+' || s[start] == '-') {
+    ++start;
+  }
+  while (start <= end) {
+    if (s[start] >= '0' && s[start] <= '9') {
+      ++num_count;
+    } else {
+      return false;
+    }
+    ++start;
+  }
+  return num_count > 0;
+}
+
+bool isFloat(const string &s, int start, int end) {
+  if (start > end)
+    return false;
+  if (s[start] == '+' || s[start] == '-') {
+    ++start;
+  }
+  int dot_count = 0, num_count = 0;
+  while (start <= end) {
+    if (s[start] == '.') {
+      ++dot_count;
+    } else if (s[start] >= '0' && s[start] <= '9') {
+      ++num_count;
+    } else {
+      return false;
+    }
+    ++start;
+  }
+  return dot_count == 1 && num_count > 0;
+}
+
+
+
+
+bool isNumber(string s) {
+  // check invalid character
+  int ls = s.size();
+  std::pair<int,int> e_times_firstLoc{0, -1};
+  for(int i = 0;i<ls;++i){
+    if(s[i] == 'e' || s[i] == 'E'){
+      e_times_firstLoc.first++;
+      e_times_firstLoc.second = i;
+    }
+    else if(s[i] != '+' && s[i] != '-' && s[i] != '.' && (s[i] < '0' || s[i] > '9')){
+      return false;
+    }
+  }
+  if(e_times_firstLoc.first > 1){
+    return false;
+  }
+  else if(e_times_firstLoc.first == 1){
+    return (isInt(s, 0, e_times_firstLoc.second - 1) || isFloat(s, 0, e_times_firstLoc.second - 1)) && isInt(s, e_times_firstLoc.second + 1, ls - 1);
+  }
+  return isInt(s, 0, ls - 1) || isFloat(s, 0, ls - 1);
+}
+
+
 
 
 
 
 
 ```
-
 
 
 
