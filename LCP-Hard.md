@@ -274,3 +274,51 @@ vector<vector<string>> lc_51_solveNQueens(int n) {
   return ans;
 }
 ```
+### 52
+```cpp
+// N皇后2
+// time: O(n^n) space: O(n)
+bool QValid(vector<int> &Q, int index){
+  for(int i = 0;i<index;++i){
+    if(Q[index] == Q[i] || (abs(Q[index] - Q[i]) == abs(index - i))){
+      return false;
+    }
+  }
+  return true;
+}
+
+
+void dfs(vector<int> &Q, int index, int &ans){
+  if(index >= Q.size()){
+    ++ans;
+    return;
+  }
+  for(int v = 1;v<=Q.size();++v){
+    Q[index] = v;
+    if(QValid(Q, index)){
+      dfs(Q, index + 1, ans);
+    }
+  }
+  Q[index] = 0;
+}
+
+
+int totalNQueens(int n) {
+  int ans = 0;
+  vector<int> Q(n, 0);
+  dfs(Q, 0, ans);
+  return ans;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
