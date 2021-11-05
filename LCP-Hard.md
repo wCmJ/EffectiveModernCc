@@ -655,9 +655,153 @@ string minWindow(string s, string t) {
 
 ```
 
+### 84
+```cpp
+// 柱状图中最大的矩形
+int largestRectangleArea(vector<int>& heights) {
+  int len = heights.size();
+  if(len == 0)return 0;
+  stack<int> inc;
+  int ans = 0;
+  for(int i = 0;i<len;++i){
+    while(!inc.empty() && heights[inc.top()] >= heights[i]){
+      int h = inc.top();
+      inc.pop();
+      int left = inc.empty() ? -1 : inc.top();
+      ans = max(ans, heights[h] * (i - left - 1));
+    }
+    inc.push(i);
+  }
+  while(!inc.empty()){
+    int h = inc.top();
+    inc.pop();
+    int left = inc.empty() ? -1 : inc.top();
+    ans = max(ans, heights[h] * (len - left - 1));  
+  }  
+  return ans;
+}
+
+```
+### 85
+```cpp
+// 最大矩形
+int maximalRectangle(vector<vector<char>>& matrix) {
+  // method2, use dp
+  { 
+    if(matrix.size() == 0 || matrix[0].size() == 0){
+      return 0;
+    }
+    int m = matrix.size(), n = matrix[0].size();
+    int ans = 0;
+    vector<vector<std::pair<int,int>>> dp(m, vector<std::pair<int,int>>(n, {0,0}));
+    for(int i = 0;i<m;++i){
+      for(int j = 0;j<n;++j){
+        if(matrix[i][j] == '1'){
+          int left = 0, up = 0;
+          if(i > 0 && j > 0){
+            left = min(dp[i-1][j].first - 1, min(dp[i][j-1].first, dp[i-1][j-1].first));
+            up = min(dp[i][j-1].second - 1, min(dp[i-1][j-1].second, dp[i-1][j].second));
+          }
+          else if(i > 0){
+            up = dp[i-1][j].second;
+          }
+          else if(j > 0){
+            left = dp[i][j-1].first;
+          }
+          dp[i][j].first = 1 + left;
+          dp[i][j].second = 1 + right;          
+        }
+      }    
+    }
+  
+  }
+
+  // method1, optimize to 84
+  if(matrix.size() == 0 || matrix[0].size() == 0){
+    return 0;
+  }
+  int m = matrix.size(), n = matrix[0].size();
+  int ans = 0;
+  vector<int> row_val(n, 0);
+  for(int i = 0;i<m;++i){
+    for(int j = 0;j<n;++j){
+      if(matrix[i][j] == '0'){
+        row_val[j] = 0;
+      }
+      else{
+        row_val[j]++;
+      }
+    }
+    ans = max(ans, largestRectangleArea(row_val));
+  }
+  return ans;
+}
+
+```
+### 87
+```cpp
+// 扰乱字符串
+bool isSimilar(const string &s1, const string &s2) {
+  int cnt[26] = {0};
+  for(auto c: s1){
+    cnt[(int)(c - 'a')]++;
+  }
+  for(auto c: s2){
+    if(--cnt[(int)(c - 'a')] < 0){
+      return false;
+    }
+  }
+  return true;
+}
+
+bool isScramble(string s1, string s2) {
+  // 11.5
+  {
+    int len = s1.size();
+    vector<vector<vector<int>>> dp(len + 1, vector<vector<int>>(len, vector<int>(len, false)));
+    for(int i = 0;i<len;++i){
+      for(int j = 0;j<len;++j){
+        dp[0][i][j] = true;
+      }
+    }
+    for(int l = 1;l<=len;++l){
+      for(int i = 0;i<=len-l;++i){
+        for(int j = 0;j<=len-l;++j){
+          if(s1.substr(i, l) == s2.substr(j, l)){
+            dp[l][i][j] = true;
+          }
+          else{
+            for(int tl = 1;tl < l;++tl){
+              dp[l][i][j] = dp[l][i][j] || (dp[tl][i][j] && dp[l - tl][i + tl][j + tl]);
+              dp[l][i][j] = dp[l][i][j] || (dp[tl][i][j + l - tl] && dp[l - tl][i + tl][j]);
+            }          
+          }
+        }
+      }
+    }
+    return dp[len][0][0];
+  }
 
 
-
+  // TLE
+  if(s1.size() != s2.size())return false;
+  if(s1 == s2)return true;
+  int len = s1.size();
+  for(int l = 1;l<len;++l){
+    string s1_left = s1.substr(0, l), s1_right = s1.substr(l);
+    string s2_left = s2.substr(0, l), s2_right = s2.substr(l);
+    if(isSimilar(s1_left, s2_left) && isSimilar(s1_right, s2_right) && isScramble(s1_left, s2_left) && isScramble(s1_right, s2_right)){
+      return true;
+    }
+    s2_right = s2.substr(0, len - l);
+    s2_left = s2.substr(len - l);
+    if(isSimilar(s1_left, s2_left) && isSimilar(s1_right, s2_right) && isScramble(s1_left, s2_left) && isScramble(s1_right, s2_right)){
+      return true;
+    }    
+  }
+  return false;
+}
+```
 
 
 
