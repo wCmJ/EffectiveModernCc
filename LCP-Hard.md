@@ -590,6 +590,98 @@ vector<string> fullJustify(vector<string> &words, int maxWidth) {
 
 
 ```
+## 11.5
+### 72
+```cpp
+// insert, delete, replace
+int minDistance(string word1, string word2) {
+  int l1 = word1.size(), l2 = word2.size();
+  if(l1 == 0)return l2;
+  if(l2 == 0)return l1;
+  vector<vector<int>> dp(l1 + 1, vector<int>(l2 + 1, 0));
+  for(int i = 0;i<l2;++i){
+    dp[0][i + 1] = dp[0][i] + 1;
+  }
+  for(int i = 0;i<l1;++i){
+    dp[i+1][0] = dp[i][0] + 1;
+  }
+  
+  for(int i = 0;i < l1;++i){
+    for(int j = 0;j < l2;++j){
+      if(word1[i] == word2[j]){
+        dp[i+1][j+1] = dp[i][j];
+      }
+      else{
+        dp[i+1][j+1] = min(dp[i][j], min(dp[i][j+1], dp[i+1][j])) + 1;
+      }
+    }
+  }
+  return dp[l1][l2];
+}
+
+```
+
+### 76
+```cpp
+// 最小覆盖子串
+string minWindow(string s, string t) {
+  int ls = s.size(), lt = t.size();
+  if(lt > ls)return "";
+  unordered_map<char, int> cs;
+  for(auto c: t){
+    cs[c]++;
+  }
+  int count = cs.size(), start = 0, end = 0;
+  int ans_start = -1, ans_len = 0;
+  while(end < ls){
+    if(cs.count(s[end]) && --cs[s[end]] == 0){
+      --count;
+    }
+    ++end;
+    while(count == 0 && start < end){
+      if(ans_len == 0 || end - start < ans_len){
+        ans_start = start;
+        ans_len = end - start;
+      }
+      
+      if(cs.count(s[start]) && ++cs[s[start]] == 1){
+        ++count;
+      }
+      ++start;
+    }
+  }
+  return ans_len == 0 ? "" : s.substr(ans_start, ans_len);
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
