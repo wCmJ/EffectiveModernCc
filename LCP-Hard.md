@@ -803,7 +803,29 @@ bool isScramble(string s1, string s2) {
 }
 ```
 
-
+## 11.6
+### 115
+```cpp
+// 不同的子序列
+// key-point：dp，结果溢出
+int numDistinct(string s, string t) {
+    int ls = s.size(), lt = t.size();
+    vector<vector<long long>> dp(lt + 1, vector<long long>(ls + 1, 0));
+    //init
+    for(int i = 0;i<=ls;++i){
+        dp[0][i] = 1;
+    }
+    for(int i = 0;i<lt;++i){
+        for(int j = i;j<ls;++j){
+            dp[i + 1][j + 1] = dp[i + 1][j];
+            if(t[i] == s[j] && dp[i+1][j+1] + dp[i][j] < INT_MAX){
+                dp[i+1][j+1] += dp[i][j];
+            }
+        }
+    }
+    return dp[lt][ls];
+}
+```
 
 
 
