@@ -167,7 +167,33 @@ int characterReplacement(const string &str, int k){
 
 ```
 
+### Longest Subarray with Ones after Replacement
+```cpp
+/*
+Given an array containing 0s and 1s, if you are allowed to replace no more than ‘k’ 0s with 1s, find the length of the longest contiguous subarray having all 1s
+[0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1], k=2 => 6
+[0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1], k=3 => 9
+*/
 
+int replacingOnes(vector<int> &nums, int k){
+  if(nums.empty())return 0;
+  int len = nums.size(), start = 0, end = 0, cnt = 0, ans = 0;
+  while(end < len){
+    if(nums[end++] == 0){
+      ++cnt;
+    }
+    while(cnt > k){
+      if(nums[start++] == 0){
+        --cnt;
+      }
+    }
+    ans = max(ans, end - start);
+  }
+  return ans;
+}
+
+
+```
 
 
 
