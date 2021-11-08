@@ -132,6 +132,55 @@ int noRepeatSubstring(const string &str){
 
 ```
 
+### Longest Substring with Same Letters after Replacement 
+```cpp
+/*
+Given a string with lowercase letters only, if you are allowed to replace no more than ‘k’ letters with any letter, find the length of the longest substring having the same letters after replacement
+aabccbb, 2 => 5
+abbcb, 1 => 4
+abccde, 1 => 3
+
+*/
+
+int characterReplacement(const string &str, int k){
+  if(str.empty())return 0;
+  {
+    int ans = 0, start = 0, len = str.size();
+    for(;start < len;){
+      int end = start, tk = k;
+      while(end < len){
+        if(str[end] != str[start] && --tk < 0){
+          break;          
+        }
+        ++end;
+      }
+      ans = max(ans, end - start);
+      while(start + 1 < len && str[start + 1] == str[start]){
+        ++start;
+      }
+      ++start;
+    }
+    return ans;
+  }
+}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
