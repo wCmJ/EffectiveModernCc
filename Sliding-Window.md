@@ -73,9 +73,64 @@ int findLength(const string& str, int k){
 }
 ```
 
+### Fruits into Baskets
+```cpp
+// medium
+/*
+Given an array of characters where each character represents a fruit tree, you are given two baskets and your goal is to put maximum number of fruits in each basket. The only restriction is that each basket can have only one type of fruit
+ABCAC => 3
+ABCBBC => 5
+*/
 
+int maxFruitCountOfTwoTypes(const string &str){  
+  if(str.size() < 2)return str.size();
+  unordered_map<char, int> cnts;
+  int len = str.size(), ans = 0, cnt = 0;
+  int start = 0, end = 0;
+  while(end < len){
+    if(++cnts[str[end++]] == 1){
+      ++cnt;
+    }
+    while(cnt > 2){
+      if(--cnts[str[start++]] == 0){
+        --cnt;
+      }
+    }
+    ans = max(ans, end - start);
+  }
+  return ans;
+}
 
+```
 
+### No-repeat Substring
+```cpp
+// Given a string, find the length of the longest substring which has no repeating characters
+/*
+aabccbb => 3
+abbbb => 2
+abccde => 3
+*/
+
+int noRepeatSubstring(const string &str){
+  if(str.size() < 2)return str.size();
+  int len = str.size(), ans = 0, start = 0, end = 0, cnt = 0;
+  unordered_map<char, int> cnts;
+  while(end < len){
+    if(++cnts[str[end++]] == 1){
+      ++cnt;
+    }
+    while(cnt < (end - start)){
+      if(--cnts[str[start++]] == 0){
+        --cnt;
+      }
+    }
+    ans = max(ans, cnt);
+  }
+  return ans;
+}
+
+```
 
 
 
