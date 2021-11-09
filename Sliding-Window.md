@@ -355,11 +355,126 @@ vector<int> wordConcatenation(const string& str, vecor<string> &words){
 
 ```
 
+### Pair with Target Sum
+```cpp
+/*
+1,2,3,4,6  target = 6 => [1,3]
+2,5,9,11 target = 11 => [0,2]
+
+*/
+
+vector<int> pairWithTargetSum(vector<int> &nums, int target){
+  int len = nums.size();
+  if(len < 2)return vector<int>();
+  vector<int> ans(2, 0);
+  int start = 0, end = len - 1;
+  while(start < end){
+    int val = nums[start] + nums[end];
+    if(val == target){
+      ans[0] = start;
+      ans[1] = end;
+      break;
+    }
+    else if(val < target){
+      ++start;
+    }
+    else{
+      --end;
+    }  
+  }
+  return ans;  
+}
+
+```
+
+### Remove Duplicates
+```cpp
+int removeDuplicates(vector<int> &nums){
+  int len = nums.size();
+  int last = -1, start = 0;
+  for(int start = 0;start < len;){
+    int end = start;
+    while(end < len && nums[end] == nums[start]){
+      ++end;
+    }
+    nums[++last] = nums[start];
+    start = end;
+  }
+  return last + 1;  
+}
 
 
+```
 
+### Squaring a Sorted Array
+```cpp
+vector<int> sortedArraySquares(vector<int>& nums){
+  int len = nums.size();
+  vector<int> ans(len, 0);
+  int index = len - 1;
+  int start = 0, end = len - 1;
+  while(index >= 0){
+    if(start > end){
+      break;
+    }
+    if(nums[start] * nums[start] >= nums[end] * nums[end]){
+      ans[index--] = nums[start] * nums[start];
+      ++start;
+    }
+    else{
+      ans[index--] = nums[end] * nums[end];
+      --end;
+    }    
+  }
+  return ans;
+}
 
+```
 
+### Triplet Sum to Zero
+```cpp
+/*
+find all unique triplets in it that add up to zero
+-3, 0, 1, 2, -1, 1, -2 => [-3, 1, 2], [-2, 0, 2], [-2, 1, 1], [-1, 0, 1]
+-5, 2, -1, -2, 3 => [-5, 2, 3], [-2, -1, 3]
+*/
+
+vector<vector<int>> tripletSumToZero(vector<int> &nums){
+  int len = nums.size();
+  vector<vector<int>> ans;
+  if(len < 3)return ans;
+  sort(nums.begin(), nums.end());
+  for(int i = 0;i<= len - 3;){
+    int val = 0 - nums[i];
+    int start = i + 1, end = len - 1;
+    while(start < end){
+      int tv = nums[start] + nums[end];
+      if(tv == val){
+        ans.push_back(vector<int>{nums[i], nums[start], nums[end]});
+        int bs = start, be = end;
+        while(start < end && nums[start] == nums[bs]){
+          ++start;
+        }
+        while(start < end && nums[end] == nums[be]){
+          --end;
+        }
+      }
+      else if(tv < val){
+        ++start;
+      }
+      else{
+        --end;
+      }      
+    }  
+    int v = nums[i];
+    while(i <= len - 3 && nums[i] == v){
+      ++i;
+    }
+  }
+  return ans;
+}
+
+```
 
 
 
