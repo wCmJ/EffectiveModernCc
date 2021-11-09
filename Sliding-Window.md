@@ -269,13 +269,91 @@ vector<int> stringAnagrams(const string &str, const string &pattern){
   }
   return ans;  
 }
+```
+
+### Problem Challenge 3
+```cpp
+/*
+Smallest Window containing Substring
+aabdec, abc => abdec
+abdabca, abc => abc
+adcad, abc => ""
+*/
+
+string minimumWindowSubstring(const string& str, const string& pattern){
+  int ls = str.size(), lp = pattern.size();
+  if(lp > ls || lp == 0 || ls == 0)return "";
+  unordered_map<char, int> cnts;
+  for(auto p: pattern){
+    cnts[p]++;
+  }
+  int start = 0, end = 0, cnt = cnts.size();
+  int ans_start = -1, ans_len = -1;
+  while(end < ls){
+    if(cnts.count(str[end]) && --cnts[str[end]] == 0){
+      --cnt;
+    }
+    ++end;
+    while(cnt == 0){
+      if(ans_start == -1 || ans_len > (end - start)){
+        ans_start = start;
+        ans_len = end - start;
+      }
+      if(cnts.count(str[start]) && ++cnts[str[start]] == 1){
+        ++cnt;
+      }
+      ++start;
+    }    
+  }
+  return ans_start == -1 ? "" : str.substr(ans_start, ans_len);  
+}
+
+
+```
+### Problem Challenge 4
+```cpp
+// Words Concatenation
+/*
+Given
+catfoxcat, [cat, fox] => [0, 3]
+catcatfoxfox, [cat, fox] => [3]
+*/
+
+vector<int> wordConcatenation(const string& str, vecor<string> &words){
+  // not empty
+  int ls = str.size(), lw = words.size(), lsw = words[0].size(), total_len = lsw * lw;
+  unordered_map<string, int> cnts;
+  for(auto &w: words){
+    cnts[w]++;
+  }
+  vector<int> ans;
+  for(int i = 0;i<lsw;++i){
+    int start = i, end = i, cnt = cnts.size();
+    unordered_map<string, int> tmp_cnt = cnts;
+    while(end + lsw <= ls){
+      string tmp = str.substr(end, lsw);
+      if(tmp_cnt.count(tmp) && --tmp_cnt[tmp] == 0){
+        --cnt;
+      }
+      end += lsw;
+      if(end - start == total_len && cnt == 0){
+        ans.push_back(start);
+      }
+      if(end - i >= total_len){
+        string tmp_start = str.substr(start, lsw);
+        if(tmp_cnt.count(tmp_start) && ++tmp_cnt[tmp_start] == 1){
+          ++cnt;
+        }
+        start += lsw;
+      }
+    }
+  }  
+  return ans;
+}
 
 
 
 ```
-
-
-
 
 
 
