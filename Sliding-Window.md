@@ -195,6 +195,55 @@ int replacingOnes(vector<int> &nums, int k){
 
 ```
 
+### Problem Challenge 1
+```cpp
+// Given a string and a pattern, find out if the string contains any permutation of the pattern
+/*
+oidbcaf, abc => true
+odicf, dc => false
+bcdxabcdy, bcdyabcdx => true
+aaacb, abc => true
+
+*/
+bool stringPermutation(const string& str, const string& pattern){
+  if(pattern.empty())return true;
+  if(str.empty())return pattern.empty();
+  unordered_map<char, int> cnts;
+  for(auto c: pattern){
+    cnts[c]++;
+  }
+  int len = str.size(), start = 0, end = 0, cnt = cnts.size();
+  while(end < len){
+    if(cnts.count(str[end]) && --cnts[str[end]] == 0){
+      --cnt;
+    }
+    ++end;
+    if(end - start == pattern.size() && cnt == 0){
+      return true;
+    }
+    if(end >= pattern.size()){
+      if(cnts.count(str[start]) && ++cnts[str[start]] == 1){
+        ++cnt;
+      }
+      ++start;
+    }    
+  }
+  return false;  
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
