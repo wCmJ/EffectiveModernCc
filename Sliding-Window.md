@@ -476,7 +476,60 @@ vector<vector<int>> tripletSumToZero(vector<int> &nums){
 
 ```
 
+### 四数之和
+```cpp
+vector<vector<int>> quadrupleSumToTarget(vector<int> &nums, int target) {
+  vector<vector<int>> ans;
+  int len = nums.size();
+  if (len < 4)
+    return ans;
+  sort(nums.begin(), nums.end());
+  for (int i = 0; i <= len - 4;) {
+    if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
+      break;
+    }
+    if (nums[i] + nums[len - 3] + nums[len - 2] + nums[len - 1] < target) {
+      // do nothing
+    } else {
+      int val = target - nums[i];
+      for (int j = i + 1; j <= len - 3;) {
+        int tmp_val = val - nums[j];
+        int start = j + 1, end = len - 1;
+        while (start < end) {
+          int cur_val = nums[start] + nums[end];
+          if (cur_val == tmp_val) {
+            ans.push_back(
+                vector<int>{nums[i], nums[j], nums[start], nums[end]});
+            int bs = start, be = end;
+            while (start < end && nums[start] == nums[bs]) {
+              ++start;
+            }
+            while (start < end && nums[end] == nums[be]) {
+              --end;
+            }
+          } else if (cur_val < tmp_val) {
+            ++start;
+          } else {
+            --end;
+          }
+        }
+        int bj = j;
+        while (j <= len - 3 && nums[bj] == nums[j]) {
+          ++j;
+        }
+      }
+    }
+    // skip duplicates
+    int base = i;
+    while (i <= len - 4 && nums[i] == nums[base]) {
+      ++i;
+    }
+  }
+  return ans;
+}
 
+
+```
 
 
 
