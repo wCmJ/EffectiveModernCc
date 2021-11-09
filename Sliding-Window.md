@@ -195,6 +195,7 @@ int replacingOnes(vector<int> &nums, int k){
 
 ```
 
+## 11.9
 ### Problem Challenge 1
 ```cpp
 // Given a string and a pattern, find out if the string contains any permutation of the pattern
@@ -233,6 +234,45 @@ bool stringPermutation(const string& str, const string& pattern){
 
 ```
 
+### Problem Challenge 2
+```cpp
+// Given a string and a pattern, find all anagrams of the pattern in the given string
+/*
+ppqp, pq => [1, 2]
+abbcabc, abc => [2, 3, 4]
+*/
+
+vector<int> stringAnagrams(const string &str, const string &pattern){
+  vector<int> ans;
+  int ls = str.size(), lp = pattern.size();
+  if(lp == 0 || ls == 0 || lp > ls)return ans;
+  unordered_map<char, int> cnts;
+  for(auto p: pattern){
+    cnts[p]++;
+  }
+  
+  int start = 0, end = 0, cnt = cnts.size();
+  while(end < ls){
+    if(cnts.count(str[end]) && --cnts[str[end]] == 0){
+      --cnt;
+    }
+    ++end;
+    if(end - start == lp && cnt == 0){
+      ans.push_back(start);
+    }
+    if(end >= lp){
+      if(cnts.count(str[start]) && ++cnts[str[start]] == 1){
+        ++cnt;
+      }
+      ++start;
+    }    
+  }
+  return ans;  
+}
+
+
+
+```
 
 
 
