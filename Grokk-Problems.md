@@ -668,9 +668,52 @@ int shortestWindowSort(vector<int> &nums){
 
 
 ```
+#############################################################################
+### LinkedList Cycle
+```cpp
+struct ListNode{
+  int val;
+  ListNode *next;
+  ListNode(int v):val(v), next(nullptr){}
+};
+
+bool hasCycle(ListNode *head){
+  if(head == nullptr || head->next == nullptr)return false;
+  ListNode *slow = head, *fast = head;
+  while(fast && fast->next){
+    slow = slow->next;
+    fast = fast->next->next;
+    if(slow == fast){
+      return true;
+    }
+  }
+  return false;
+}
 
 
+```
 
+### Cycle start
+```cpp
+ListNode* findCycleStart(ListNode *head) {
+  auto slow = head, fast = head;
+  while (fast && fast->next) {
+    slow = slow->next;
+    fast = fast->next->next;
+    if (slow == fast) {
+      break;
+    }
+  }
+  auto ln1 = head, ln2 = slow;
+  while (ln1 != ln2) {
+    ln1 = ln1->next;
+    ln2 = ln2->next;
+  }
+  return ln1;
+}
+
+
+```
 
 
 
