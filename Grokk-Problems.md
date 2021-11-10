@@ -532,6 +532,87 @@ vector<vector<int>> quadrupleSumToTarget(vector<int> &nums, int target) {
 ```
 
 
+## 11.10
+### Problem Challenge 2
+```cpp
+/*
+Comparing Strings containing Backspaces
+Given two strings containing backspaces(identified by the character #), check if the two strins are equal
+
+xy#z, xzz# => true
+xy#z, zyz# => false
+xp#, xyz## => true
+xywrrmp, xywrrmu#p => true
+*/
+
+void getThrough(const string& s, string &ns){
+  int backspace_cnt = 0, len = s.size();
+  for(int i = len - 1;i >= 0;--i){
+    if(s[i] == '#'){
+      ++backspace_cnt;
+    }
+    else{
+      if(backspace_cnt > 0){
+        --backspace_cnt;
+      }
+      else{
+        ns = s[i] + ns;
+      }
+    }
+  }
+}
+
+bool backspaceCompare(const string& s1, const string& s2){
+  string ans1, ans2;
+  getThrough(s1, ans1);
+  getThrough(s2, ans2);
+  return ans1 == ans2;
+}
+
+
+
+
+```
+### Problem Challenge 3
+```cpp
+/*
+Minimum Window Sort
+1, 2, 5, 3, 7, 10, 9, 12 => 5(5,3,7,10,9)
+1, 3, 2, 0, -1, 7, 10 => 5(1, 3, 2, 0, -1)
+1, 2, 3 => 0
+3, 2, 1 => 3
+*/
+
+int shortestWindowSort(vector<int> &nums){
+  int len = nums.size();
+  if (len < 2)
+    return 0;
+  vector<int> copy = nums;
+  sort(copy.begin(), copy.end());
+  int start = 0, end = len - 1;
+  while (start < len) {
+    if (nums[start] != copy[start]) {
+      break;
+    }
+    ++start;
+  }
+  while (-1 < end) {
+    if (nums[end] != copy[end]) {
+      break;
+    }
+    --end;
+  }
+  return end >= start ? end - start + 1 : 0;
+}
+
+```
+
+
+
+
+
+
+
 
 
 
