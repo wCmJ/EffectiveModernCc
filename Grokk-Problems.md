@@ -715,7 +715,52 @@ ListNode* findCycleStart(ListNode *head) {
 
 ```
 
+### Cycle Array
+```cpp
+bool isCircularArrayCheck2(vector<int> &nums, int index) {
+  bool direction = nums[index] > 0;
+  int slow = index, fast = index;
+  while (true) {
+    slow = (slow + nums[slow]) % nums.size();
+    if ((nums[slow] > 0) != direction) {
+      return false;
+    }
+    fast = (fast + nums[fast]) % nums.size();
+    if ((nums[fast] > 0) != direction) {
+      return false;
+    }
+    fast = (fast + nums[fast]) % nums.size();
+    if ((nums[fast] > 0) != direction) {
+      return false;
+    }
+    if (slow == fast) {
+      return true;
+    }
+  }
+  return false;
+}
 
+bool isCircularArray(vector<int> &nums) {
+  /*
+  1, 2, -1, 2, 2
+  2, 1, -1, -2
+  */
+  // method2
+  {
+    // cycle => slow & fast
+    int len = nums.size();
+    if (len < 2)
+      return false;
+    for (int i = 0; i < len; ++i) {
+      if (isCircularArrayCheck2(nums, i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+```
 
 
 
