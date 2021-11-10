@@ -605,6 +605,68 @@ int shortestWindowSort(vector<int> &nums){
   return end >= start ? end - start + 1 : 0;
 }
 
+// method2
+/*
+1. 从左往右找出第一个值index1，该值大于它后面第一个值
+2. 从右往左找出第一个值index2，该值小于它前面第一个值
+3. 找出index1和index2中的最大值max和最小值min
+4. 在0~index1-1之间，找出第一个小于min的值，将index1更新为该下标
+5. 在len-1~index2 + 1之间，找出第一个大于max的值，将index2更新为该下标
+*/
+
+void getInvalidIndex(vector<int> &nums, int &start, int &end) {
+  int len = nums.size();
+  while (start + 1 < len) {
+    if (nums[start] > nums[start + 1]) {
+      break;
+    }
+    ++start;
+  }
+  // last invalid
+  while (end - 1 >= 0) {
+    if (nums[end] < nums[end - 1]) {
+      break;
+    }
+    --end;
+  }
+}
+
+void updateInvalidIndex(vector<int> &nums, int &start, int &end) {
+  // find min and max in start and end
+  int len = nums.size();
+  int min_val = nums[start], max_val = nums[end];
+  for (int i = start; i <= end; ++i) {
+    min_val = min(nums[i], min_val);
+    max_val = max(nums[i], max_val);
+  }
+  for (int i = 0; i < start; ++i) {
+    if (nums[i] > min_val) {
+      start = i;
+      break;
+    }
+  }
+  for (int i = len - 1; i > end; --i) {
+    if (nums[i] < max_val) {
+      end = i;
+      break;
+    }
+  }
+}
+int shortestWindowSort(vector<int> &nums){
+    int len = nums.size();
+    if (len < 2)
+      return 0;
+    int start = 0, end = len - 1;
+    // first invalid
+    getInvalidIndex(nums, start, end);
+    if (end <= start) {
+      return 0;
+    }
+    updateInvalidIndex(nums, start, end);
+    return end - start + 1;
+}
+
+
 ```
 
 
