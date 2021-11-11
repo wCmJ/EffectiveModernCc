@@ -779,7 +779,7 @@ struct lessEndTime{
 
 int minimumMeetingRooms(vector<vector<int>>& meetings){
   sort(meetings.begin(), meetings.end(), [](vector<int> &v1, vector<int> &v2){
-    return v1[0] < v2[0];
+    return v1[0] < v2[0]; // 需要按照start time排序，确保被弹出去的不会影响后续的计算
   });
   size_t min_rooms = 0;
   priority_queue<vector<int>, vector<vector<int>>, lessEndTime> min_heap;
@@ -794,11 +794,38 @@ int minimumMeetingRooms(vector<vector<int>>& meetings){
 }
 
 
+```
+
+### Maximum CPU Load
+```cpp
+struct lessEndTime{
+  bool operator()(vector<int> &v1, vector<int> &v2){
+    return v1[1] > v2[1];
+  }
+};
+
+int maximumCPULoad(vector<vector<int>> &loads){
+  sort(loads.begin(), loads.end(), [](vector<int> &v1, vector<int> &v2){
+    return v1[0] < v2[0];
+  });
+  priority_queue<vector<int>, vector<vector<int>>, lessEndTime> min_heap;
+  int ans = 0, cur_load = 0;
+  for(auto &load: loads){
+    while(!min_heap.empty() && min_heap.top()[1] < load[0]){
+      cur_load -= min_heap.top()[2];
+      min_heap.pop();
+    }
+    cur_load += load[2];
+    min_heap.push(load);
+    ans = std::max(ans, cur_load);
+  }
+  return ans;  
+}
+
 
 
 
 ```
-
 
 
 
