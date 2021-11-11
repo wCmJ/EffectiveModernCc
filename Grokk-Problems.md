@@ -827,7 +827,25 @@ int maximumCPULoad(vector<vector<int>> &loads){
 
 ```
 
+### Employee Free Time
+```cpp
+struct LessStartTime{
+  bool operator()(vector<int> &v1, vector<int> &v2){
+    return (v1[0] > v2[0]) ? (true) : ();
+  }
+};
 
+vector<vector<int>> employeeFreeTime(vector<vector<vector<int>>> &employees){
+
+
+}
+
+
+
+
+
+
+```
 
 
 
