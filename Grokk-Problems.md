@@ -762,7 +762,42 @@ bool isCircularArray(vector<int> &nums) {
 
 ```
 
+## 11.11
+### Minimum Meeting Rooms
+```cpp
+/*
+最少使用多少个会议室，可以完成所有会议
+{2,3},{2,4},{3,5},{4,5} => 2
+{1,4},{2,3},{3,6} => 2
+*/
+struct lessEndTime{
+  bool operator()(vector<int> &v1, vector<int> &v2){
+    return v1[1] > v2[1];
+  }
+};
 
+
+int minimumMeetingRooms(vector<vector<int>>& meetings){
+  sort(meetings.begin(), meetings.end(), [](vector<int> &v1, vector<int> &v2){
+    return v1[0] < v2[0];
+  });
+  size_t min_rooms = 0;
+  priority_queue<vector<int>, vector<vector<int>>, lessEndTime> min_heap;
+  for(auto &meeting& meetings){
+    while(!min_heap.empty() && meeting[0] >= min_heap.top()[1]){
+      min_heap.pop();
+    }
+    min_heap.push(meeting);
+    min_rooms = std::max(min_rooms, min_heap.size());
+  }
+  return min_rooms;
+}
+
+
+
+
+
+```
 
 
 
