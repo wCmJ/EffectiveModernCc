@@ -83,6 +83,65 @@
 #### 领导者/追随者模式
 
 
+## 服务器调制、调试及压测
+- 系统调制、服务器调试及压力测试
+- Linux平台可以通过修改文件的方式来调整内核参数，系统或进程能打开的最大文件描述符数尤其重要
+- 碰到问题意外时，一种调试方法是利用tcpdump抓包，对于服务器逻辑错误，更方便的调试方法是gdb调试器
+- 编写压力测试工具
+
+### 最大文件描述符数
+- 文件描述符是服务器程序的宝贵资源，系统分配给应用程序的文件描述符数量是有限制的，所以必须总是关闭那些已经不再使用的文件描述符，以释放它们占用的资源
+- 作为守护进程运行的服务器程序应该总是关闭标准输入、标准输出和标准错误输出
+- Linux对于应用程序能打开的最大文件描述符数量有两个层次的限制
+  - 用户级限制：目标用户运行的所有进程总共能打开的文件描述符数. ulimit -n or /etc/security/limits.conf
+  - 系统级限制：所有用户能打开的文件描述符数
+
+- /proc/sys/fs/file-max：系统级文件描述符限制
+- /proc/sys/fs/epoll/max_user_watches：一个用户能够往epoll内核事件表中注册的事件的总量
+- /proc/sys/net/core/somaxconn：监听队列中，能够建立完整连接而进入established状态的socket的最大数目
+- /proc/sys/net/ipv4/tcp_max_syn_backlog：listen监听队列中，能够转移至EStablished或者SYN_RCVD状态的socket的最大数目
+- /proc/sys/net/ipv4/tcp_wmem：写缓冲区的最小值、默认值和最大值
+- /proc/sys/net/ipv4/tcp_rmem：读缓冲区的最小值，默认值和最大值
+- /proc/sys/net/ipv4/tcp_syncookies：通过启动cookie来防止一个监听socket因不停地重复接收来自同一个地址的连接请求，而导致listen监听队列溢出
+- 永久生效：写入sysctl.conf中，且执行sysctl -p来生效
+
+### gdb调试多进程
+- 一个进程通过fork系统调用创建了子进程，gdb会继续调试原来的进程，子进程正常运行，如何调试子进程？
+  1. 单独调试子进程
+    - 找到子进程PID
+    - 1. gdb；2. attach PID
+  2. 使用调试选项follow-fork-mode
+    - follow-fork-mode运行我们选择程序在执行fork后是继续调试父进程还是调试子进程
+    - 使用方法：1. gdb ./app; 2. set follow-fork-mode child/parent; 
+
+### gdb调试多线程
+- gdb有一组命令可辅助多线程程序的调试
+- info threads：显示当前可调式的所有线程，gdb会为每个线程分配一个ID，为*的表示当前线程
+- thread ID：调试目标ID的线程
+- set scheduler-locking[off|on|step]：调试多线程程序时，默认除了被调试的线程在执行外，其他线程也在继续执行，有时候希望只有被调试的线程执行，可以通过该命令实现
+  - off：不锁定任何线程，即所有线程都可执行，默认值
+  - on：只有当前被调试的线程会继续执行
+  - step：在单步执行的时候，只有当前线程会执行
+  - 1. gdb ./app; 2. info threads; 3. set scheduler-locking on(不执行其他线程，锁定调试对象); 4. thread 2; 5. bt;
+
+### 调试进程池或者线程池
+- 一个不错的方法是：先将池中的进程个数或线程个数减少至1，以观察程序的逻辑是否正确，然后再逐步增加
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
