@@ -827,10 +827,91 @@ int numDistinct(string s, string t) {
 }
 ```
 
+## 11.15
+### 求解子数组和为奇数的个数
+```cpp
+int numberOfOddSubarray(vector<int> &nums){
+  //method1
+  {
+    int presum = 0, odd_count = 0, even_count = 1;
+    for(auto n: nums){
+      presum += n;
+      if(presum % 2 == 0){
+        ++even_count;
+      }
+      else{
+        ++odd_count;
+      }
+    }
+    return even_count * odd_count;  
+  }
+  
+  // method2
+  {
+    int len = nums.size();
+    vector<int> odd(len, 0), even(len, 0);
+    if(nums[0] % 2 == 0){
+      even[0] = 1;
+    }
+    else{
+      odd[0] = 1;
+    }
+    int ans = odd[0];
+    for(int i = 1;i<len;++i){
+      if(nums[i] % 2 == 0){
+        even[i] = even[i-1] + 1;
+        odd[i] = odd[i-1];
+      }
+      else{
+        even[i] = odd[i-1];
+        odd[i] = even[i-1] + 1;
+      }
+      ans += odd[i];
+    }      
+  }
+}
 
+```
 
-
-
+## Graph
+### 课程表 bool & vector<int>
+```cpp
+bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+  /*
+    1. 构建邻接矩阵，表明被依赖关系
+    2. 计算入度，即依赖于其他节点的数目
+    3. 获取入度为0的key，同时更新该key被依赖的节点的入度，直到不存在入度为0的key为止  
+  */
+  vector<vector<int>> beDepends(numCourses);
+  vector<int> degree(numCourses, 0);
+  for(auto &node: prerequisites){
+    beDepends[node[1]].push_back(node[0]);
+    degree[node[0]]++;
+  }
+  deque<int> finished;
+  for(int i = 0;i<numCourses;++i){
+    if(degree[i]==0){
+      finished.push_back(i);
+    }
+  }
+  int ans = 0;
+  while(!finished.empty()){
+    int len = finished.size();
+    ans += len;
+    for(int i = 0;i<len;++i){
+      int key = finished.front();
+      finished.pop_front();
+      //ans.push_back(key);
+      for(auto n: beDepends[key]){
+        if(--degree[n] == 0){
+          finished.push_back(n);
+        }
+      }
+    }  
+  }
+  return ans == numCourses;  
+}  
+```
 
 
 
