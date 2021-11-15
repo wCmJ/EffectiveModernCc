@@ -913,8 +913,39 @@ bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
 }  
 ```
 
+### 重新安排行程
+```cpp
+// 第一次使用map时，会忽略重复的ticket，改成multimap  
+bool dfs(unordered_map<string, multimap<string, bool>> &start_end, const string& loc, vector<string> &ans, int total){
+  if(ans.size() == total){
+    return true;
+  }
+  for(auto &node: start_end[loc]){
+    if(!node.second){
+      node.second = true;
+      ans.push_back(node.first);
+      if(dfs(start_end, node.first, ans, total)){
+        return true;
+      }
+      node.second = false;
+      ans.pop_back();
+    }
+  }
+  return ans.size() == total;  
+}  
+  
+vector<string> findItinerary(vector<vector<string>> &tickets){
+  unordered_map<string, multimap<string, bool>> start_ends;
+  for(auto &t: tickets){
+    start_ends[t[0]].insert({t[1], false});
+  }
+  vector<string> ans{"JFK"};
+  dfs(start_ends, "JFK", ans, tickets.size() + 1);
+  return ans;  
+}  
+  
 
-
+```
 
 
 
