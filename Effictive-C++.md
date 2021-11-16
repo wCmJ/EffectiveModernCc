@@ -27,4 +27,52 @@ private:
   enum {NT = 5};
   int arr[NT];
 };
+
+// use #define as MACRO
+#define CALL_WITH_MAX(a, b) f((a) > (b) ? (a) : (b))
+// every variable should be in paranthesises
+int a = 5, b = 0;
+CALL_WITH_MAX(++a, b);  // ++ once
+CALL_WITH_MAX(++a, b + 10); // ++ twice
+
+// use template inline to replace CALL_WITH_MAX
+template<typename T>
+inline void callWithMax(const T& a, const T& b){
+  f(a > b ? a : b);
+}
 ```
+- for constant variable, use const or enums to replace #defines
+- for macro like function, use inline function to replace #defines
+
+### Use const whenever possible
+- declare iterator as const is same with T* const
+- if you want to get a const T*, use const_iterator
+```cpp
+std::vector<int> vec;
+//...
+const std::vector<int>::iterator iter = vec.begin();
+*iter = 10;
+std::vector<int>::const_iterator cIter = vec.begin();
+*cIter = 10; // error
+++cIter;
+```
+- const used in function
+- const for member functions: const and non-const can be overloaded functions
+```cpp
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
