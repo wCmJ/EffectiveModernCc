@@ -64,7 +64,8 @@ vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
   return ans;
 }
 ```
-
+- 使用并查集判断是否成环
+- 对于父节点个数超过1个的节点，从后往前删除，判断删除单个节点后剩余节点是否成环
 
 
 
