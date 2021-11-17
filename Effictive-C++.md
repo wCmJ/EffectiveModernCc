@@ -64,6 +64,18 @@ std::vector<int>::const_iterator cIter = vec.begin();
 
 ```
 
+### Make sure that objects are initialized before they're used
+- initialize objects with build-in type by yourself since c++ do not promise
+- constructors should use member initialization list and do not use assignment in constructor body, ensure the order of initialize is same with the order of declare
+- to avoid the wrong order of initialize, use local static replace non-local static
+
+
+### Know what functions C++ silently writes and calls
+- compiler will make default constructor, copy constructor, copy assignment operator and destructor for class
+
+
+
+
 
 
 
