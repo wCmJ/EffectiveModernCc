@@ -72,7 +72,21 @@ std::vector<int>::const_iterator cIter = vec.begin();
 
 ### Know what functions C++ silently writes and calls
 - compiler will make default constructor, copy constructor, copy assignment operator and destructor for class
+```cpp
 
+class NumStr{
+public:
+    std::string &s_;
+
+public:
+    NumStr(std::string &s, int i):s_(s){}    
+};
+
+std::string s1 = "s1";
+std::string s2 = "s2";
+NumStr ns1(s1), ns2(s2);
+ns1 = ns2; // wrong cause there is not user-define copy assignment to process reference    
+```
 
 
 
