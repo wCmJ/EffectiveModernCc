@@ -34,7 +34,7 @@
 - CXX-standard
   - set (CMAKE_CXX_STANDARD 11)
 - target_compile_features(project_name PUBLIC cxx_auto_type)
-
+- configure_file(ver.h.in ${PROJECT_BINARY_DIR}/ver.h) # arguments: source file and destination file
 
 ### Static Lib
 - add_library(lib_name STATIC src/h.cpp)
@@ -55,6 +55,11 @@
 - the base install location is controlled by the variable CMAKE_INSTALL_PREFIX which can be set using ccmake or by calling cmake with `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location`
 - make install
 
+### Protobuf
+- generating source
+  - PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS AddressBook.proto)
+  - PROTO_SRCS: name of the variable that will store the .pb.cc files
+  - PROTO_HDRS: name of the variable that will store the .pb.h files
 
 
 
