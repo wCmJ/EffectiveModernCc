@@ -124,6 +124,91 @@ int threeSumClosest(vector<int>& nums, int target) {
 }
 ```
 
+## 18. 四数之和
+```cpp
+/*
+  给定一个由n个整数组成的数组nums和一个目标值target，找出所有四数之和为target且不重复的四元组
+  思路：暴力解法为n^4，复杂度过高。将数组排序，O(nlogn)。遍历数组O(n)，进行三数选择（O(n^2)），总时间复杂度为O(n^3) + O(nlongn) = O(n^3)
+  
+  注意：大数问题
+*/
+
+vector<vector<int>> fourSum(vector<int>& nums, int target) {
+  int len = nums.size();
+  if(len < 4)return vector<vector<int>>();
+  // sort
+  sort(nums.begin(), nums.end());
+  
+  // search
+  vector<vector<int>> ans;
+  for(int i = 0;i <= len - 4;){
+    // if min > target, just return
+    if((long long)nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)break;
+    if((long long)nums[i] + nums[len - 1] + nums[len - 2] + nums[len - 3] < target){
+      ++i;
+      continue;
+    }
+    for(int j = i + 1; j <= len - 3;){
+      if((long long)nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target)break;
+      if((long long)nums[i] + nums[j] + nums[len - 1] + nums[len - 2] < target){
+        ++j;
+        continue;
+      }
+      int start = j + 1, end = len - 1;
+      while(start < end){
+        long long val = (long long)nums[i] + nums[j] + nums[start] + nums[end];
+        if(val == target){
+          ans.push_back(vector<int>{nums[i], nums[j], nums[start], nums[end]});
+          while(start + 1 < end && nums[start] == nums[start + 1]){
+            +start;
+          }
+          ++start;
+          while(start < end - 1 && nums[end] == nums[end - 1]){
+            --end;
+          }
+          --end;
+        }
+        else if(val > target){
+          while(start < end - 1 && nums[end] == nums[end - 1]){
+            --end;
+          }
+          --end;
+        }
+        else{
+          while(start + 1 < end && nums[start] == nums[start + 1]){
+            +start;
+          }
+          ++start;
+        }
+      }
+      //ignore duplicates nums[j]
+      while(j + 1 <= len - 3 && nums[j + 1] == nums[j]){
+        ++j;
+      }
+      ++j;
+    }
+    //ignore duplicates nums[i]
+    while(i + 1 <= len - 4 && nums[i + 1] == nums[i]){
+      ++i;
+    }
+    ++i;  
+  }
+  return ans;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
