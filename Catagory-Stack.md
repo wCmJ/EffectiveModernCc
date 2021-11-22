@@ -42,23 +42,70 @@ string simplifyPath(string path) {
   return ans.empty() ? "/" : ans;
 }
 
+```
 
 
+## 114. 将二叉树展开为链表
+```cpp
+// 以先序遍历顺序将二叉树展开为单链表，左子节点为空，右子节点指向链表下一个节点
 
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode() : val(0), left(nullptr), right(nullptr) {}
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  TreeNode(int x, TreeNode *l, TreeNode *r) : val(x), left(l), right(r) {}
+};
 
-
-
-
-
-
-
-
-
+void flatten(TreeNode *root) {
+    // use stack to travser Tree
+    if(root == nullptr)return;
+    TreeNode *temp = root, *last = nullptr;
+    stack<TreeNode*> nodes;
+    while(true){
+      while(temp){
+        TreeNode *left = temp->left, *right = temp->right;
+        if(last != nullptr){
+          last->left = nullptr;
+          last->right = temp;
+        }
+        last = temp;
+        temp = left;
+        if(right){
+          nodes.push(right);
+        }      
+      }
+      if(nodes.empty())break;
+      temp = nodes.top();
+      nodes.pop();
+    }    
+}
 
 
 
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
