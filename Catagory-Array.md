@@ -76,6 +76,64 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 }
 ```
 
+## 16. 最接近的三数之和
+```cpp
+/*
+  给定一个长度为n的整数数组nums和一个目标值target，从nums中选出三个整数，使它们的和与target最接近
+  最接近可以从左侧接近，也可以从右侧接近
+  思路：排序数组，从左往右遍历，不断计算三数之和，并更新结果，如果第一个元素大于target，不能优化
+    
+  WRONG 2 times:
+  1. 认真审题，确认输入、输出、条件
+  2. 对于hard-code，当代码修改时需要检查是否仍然有效
+*/
+int threeSumClosest(vector<int>& nums, int target) {
+  // nums.size() >= 3
+  int len = nums.size();
+  int ans = nums[0] + nums[1] + nums[2];
+  // sort
+  sort(nums.begin(), nums.end());
+  for(int i = 0;i<=len - 3;){
+    int start = i + 1, end = len - 1;
+    while(start < end){
+      int val = nums[i] + nums[start] + nums[end];
+      ans = abs(val - target) < abs(ans - target) ? val : ans;
+      if(val == target){
+        return 0;
+      }
+      else if(val > target){        
+        while(start < end - 1 && nums[end] == nums[end - 1]){
+          --end;
+        }
+        --end;
+      }
+      else{
+        while(start + 1 < end && nums[start] == nums[start + 1]){
+          ++start;
+        }
+        ++start;
+      }
+    }
+    // ignore duplicates
+    while(i + 1 <= len - 3 && nums[i + 1] == nums[i]){
+      ++i;
+    }
+    ++i;
+  }
+  return ans;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
