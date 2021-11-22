@@ -197,7 +197,63 @@ vector<vector<int>> fourSum(vector<int>& nums, int target) {
 }
 ```
 
+## 31. 下一个排列
+```cpp
+/*
+  给定一个整数数组，返回它的下一个更大的排列，如果不存在，返回最小排列
 
+  问题：认真阅读题目，明确输入、输出、条件
+*/
+
+void swap(vector<int> &nums, int i, int j){
+  int temp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = temp;
+}
+
+void nextPermutation(vector<int> &nums){
+  int len = nums.size();
+  if(len < 2)return;
+  //get the first invalid index
+  int invalid_index = len - 2;
+  while(invalid_index >= 0 && nums[invalid_index] >= nums[invalid_index]){
+    --invalid_index;
+  }
+  if(invalid_index < 0){
+    // no larger
+    for(int i = 0,j = len - 1;i < j;++i, --j){
+      swap(nums, i, j);
+    }
+    return;
+  }
+  else{
+    //get the first larger than nums[invalid_index] between invalid_index + 1 to len - 1
+    int start = invalid_index + 1, end = len - 1, index = invalid_index + 1;
+    while(start <= end){
+      int mid = start + (end - start) / 2;
+      if(nums[mid] > nums[invalid_index]){
+        index = mid;
+        start = mid + 1;
+      }
+      else{
+        end = mid - 1;
+      }    
+    }
+    swap(nums, invalid_index, index);
+    for(int i = invalid+1, j = len -1;i<j;++i,--j){
+      swap(nums, i, j);
+    }  
+  }
+}
+
+
+
+
+
+
+
+
+```
 
 
 
