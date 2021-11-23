@@ -37,6 +37,20 @@ bool canJump(vector<int> &nums){
 
 ```
 
+## 122. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
