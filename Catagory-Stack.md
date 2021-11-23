@@ -82,13 +82,27 @@ void flatten(TreeNode *root) {
     }    
 }
 
+```
+
+
+## 143. 重排链表
+```cpp
+// 无需额外的技巧
+struct ListNode{
+
+
+};
+
+
+
+
 
 
 
 ```
 
 
-
+## 227. 基本计算器
 
 
 
