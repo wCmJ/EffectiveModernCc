@@ -142,9 +142,71 @@ int maxProfit(vector<int> &prices, int fee){
 
 
 ```
+## 134. 加油站
+```cpp
+int canCompleteCircuit(vector<int> &gas, vector<int> &cost){
+  int len = gas.size();
+  int cur_gas = 0, max_gas = -1, index = -1;
+  for(int i = len - 1;i >= 0;--i){
+    cur_gas += (gas[i] - cost[i]);
+    if(cur_gas > max_gas){
+      max_gas = cur_gas;
+      index = i;
+    }
+  }
+  return cur_gas >= 0 ? index : -1;
+}
 
 
 
+```
+
+## 179. 最大数
+```cpp
+struct larger{
+  bool operator()(const string &a, const string &b){
+    return a + b < b + a;
+  }
+};
+
+string largestNumberToString(int n){
+  // n >= 0
+  if(0 == n){
+    return "0";
+  }
+  string ans;
+  while(n){
+    ans = (char)(n % 10 + '0') + ans;
+    n /= 10;
+  }
+  return ans;
+}
+
+string largestNumber(vector<int>& nums){
+  priority_queue<string, vector<string>, larger> max_heap;
+  for(auto n: nums){
+    max_heap.push(largestNumberToString(n));
+  }
+  string ans;
+  while(!max_heap.empty()){
+    ans += max_heap.top();
+    max_heap.pop();
+  }
+  while(ans.size() > 1 && ans[0] == '0'){
+    ans = ans.substr(1);
+  }
+  return ans;
+}
+
+
+
+
+
+
+
+
+
+```
 
 
 
