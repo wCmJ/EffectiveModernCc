@@ -199,6 +199,37 @@ string largestNumber(vector<int>& nums){
 }
 
 
+```
+
+## 316. 去除重复字母
+```cpp
+string removeDuplicateLetters(string s){
+  unordered_map<char, int> char_times;
+  for(auto c: s){
+    char_times[c]++;
+  }
+  
+  stack<char> valid_chars;
+  unordered_set<int> existed;
+  for(auto c: s){
+    if(0 == existed.count(c)){
+      while(!valid_chars.empty() && char_times[valid_chars.top()] > 0 && valid_chars.top() > c){
+        existed.erase(valid_chars.top());
+        valid_chars.pop();        
+      }
+      valid_chars.push(c);
+      existed.insert(c);
+    }
+    char_times[c]--;
+  }
+  string ans;
+  while(!valid_chars.empty()){
+    ans = valid_chars.top() + ans;
+    valid_chars.pop();
+  }
+  return ans;
+}
+
 
 
 
@@ -207,8 +238,6 @@ string largestNumber(vector<int>& nums){
 
 
 ```
-
-
 
 
 
