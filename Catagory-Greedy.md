@@ -230,14 +230,55 @@ string removeDuplicateLetters(string s){
   return ans;
 }
 
+```
 
-
-
-
+## 334. 递增的三元子序列
+```cpp
+bool increasingTriplet(vector<int> &nums){
+  int len = nums.size();
+  int one_min = nums[0];
+  int two_min[3] = {0, INT_MAX, INT_MAX};
+  for(int i = 1;i<len;++i){
+    if(nums[i] > one_min){
+      if(nums[i] > two_min[2]){
+        return true;
+      }
+      two_min[0] = 1;
+      two_min[1] = min(two_min[1], one_min);
+      two_min[2] = min(two_min[2], nums[i]);
+    }
+    else{
+      one_min = nums[i];
+    }
+  }
+  return false;
+}
 
 
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
