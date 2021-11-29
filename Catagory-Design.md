@@ -42,5 +42,53 @@ private:
 };
 ```
 
+## 535. TinyUrl
+```cpp
+// how to design a hash function
+/*
+  1. use hashcode: s[0] * 7^(n-1) + s[1] * 7^(n-2) + ... + s[n]
+  2. use random number
+*/
+
+```
+
+
+
+## 622. 设计循环队列
+```cpp
+class CircularQueue{
+public:
+  CircularQueue(int k);
+  
+  bool enQueue(int val);
+  
+  bool deQueue();
+  
+  int Front();
+  
+  int Rear();
+  
+  bool isEmpty();
+  
+  bool isFull();
+};
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
