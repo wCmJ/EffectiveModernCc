@@ -74,7 +74,35 @@ public:
 };
 ```
 
+## 641. 设计循环双端队列
+```cpp
 
+class CircularQueue{
+public:
+  CircularQueue(int k);
+  
+  bool insertFront(int value);
+  
+  bool insertLast(int value);
+  
+  bool deleteFront();
+  
+  bool deleteLast();
+  
+  int getFront();
+  
+  int getRear();
+  
+  bool isEmpty();
+  
+  bool isFull();
+private:
+  vector<int> nums_;
+  int head_, tail_, count_;
+};
+
+```
+## 如果不使用计数，需要预留一个位置来区分队列满或者队列空
 
 
 
