@@ -147,29 +147,92 @@ Start with the key characteristics of Distributed Systems
 - RR
 
 
+## Data Partitioning
+- break up a big db into many smaller parts
+
+### Partitioning Methods
+- Horizontal partitioning
+  1. 将不同的rows放入不同tables中
+  2. 问题：如果分片关键字不均匀，会导致服务器不均衡
+
+- Vertical partitioning
+  1. 将数据按照属性分别存储在不同的server，比如用户、照片、关注等，分别放在不同的数据库中
+  2. 问题：查询时需要遍历所有servers
+- Directory Based Partitioning
+  1. 创建一个查询服务，该服务知道当前的分片策略，并且负责维护tuple key和db的映射关系
+
+### Partitioning criteria
+- Key or hash-based partitioning
+  1. 哈希形式，固定总量n，通过%n定位服务器
+  2. 问题：增加n时，需要更新所有数据。可通过一致性哈希解决
+
+- List partitioning
+  1. 
+
+- Round-robin partitioning
+
+- Composite partitioning
+  1. 结合上述几种方式
+
+
+### 问题
+- 数据被打散后，会给查询或者更新带来问题
 
 
 
+## Indexs
+
+## Proxies
+- filter requests, log requests, thansform requests
+- serve as back-end server use cache
+
+
+### Proxy Server Types
+- Open Proxy
+- Reverse Proxy
 
 
 
+## Redundancy and Replication
+- Redundancy: remove single point of failure
+- Replication: sharing information to ensure consistency between redundant resources
+  - master-slave
 
 
+## SQL Vs. NoSQL
+- SQL: rows and columns
+- NoSQL
+  - Key-Value Stores: Redis, Voldemort, Dynamo
+  - Document Databases: CouchDB, MongoDB
+  - Wide-Column DB: Cassandra, HBase
+  - Graph DB: Neo4J, InfiniteGraph
 
 
+### High level differences
+- Storage
+  1. SQL: tables
+  2. NoSQL: key-value, document, graph
+- Schema
+  1. SQL: each record conforms to a fixed schema
+  2. NoSQL: schemas are dynamic
+- Querying
+- Scalability
+  1. SQL: vertical
+  2. NoSQL: horizontal
+
+- Reliability
+  1. most of the NoSQL solutions sacrifice ACID compliance for performance and scalability
 
 
+### Which one to use
+- Reasons to use SQL
+  1. ACID
+  2. data is structured and unchanging
 
-
-
-
-
-
-
-
-
-
-
+- Reasons to use NoSQL
+  1. large volumes of data that often have little to no structure
+  2. Making the most of cloud computing and storage
+  3. Rapid development
 
 
 
