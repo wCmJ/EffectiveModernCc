@@ -112,11 +112,39 @@ Start with the key characteristics of Distributed Systems
   - 如果main LB故障，第二个LB成为main LB
 
 
+## Caching
+- LB支撑横向扩展
+- 缓存提高单台机器的效率
+- 缓存可以存在于任意层：硬件、操作系统、浏览器、应用程序等
+### Application server cache
+- cache on a request layer node
+
+### Content Distribution Network (CDN)
+- static media
+- a request will first ask the CDN for a piece of static media
+- CDN will serve that content if it has it locally available
+- if it isn't available, the CDN will query the back-end servers for the file, cache it locally
 
 
+### Cache Invalidation
+- cache should be valid, to maintain this
+  - write-through cache
+    1. 数据同时写入缓存和数据库中，保证不会丢失任何数据，无论发生crash，断电或者其他系统错误
+    2. 增加latency，在返回数据之前需要写两次
+  - write-around cache
+    1. 写入数据库，跳过缓存
+    2. 新数据请求会出现缓存失效，需要重新从后端读取，增加latency
+  - write-back cache
+    1. 写入缓存后返回给用户，在规定时间或者满足一定条件后，再写入数据库
+    2. 存在数据丢失风险
 
-
-
+### 缓存淘汰策略
+- FIFO
+- LIFO
+- LRU
+- MRU
+- LFU
+- RR
 
 
 
