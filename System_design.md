@@ -41,3 +41,113 @@
   4. MRU
   5. LFU
   6. RR
+
+
+
+## Basics
+### consider a few things
+- the different architectural pieces that can be used
+- how do this pieces work with each other
+- how can we best utilize these pieces: what are the right tradeoffs?
+Start with the key characteristics of Distributed Systems
+
+
+## Key characteristics of Distributed Systems
+- Scalability
+- Reliability
+- Availability
+- Efficiency
+- Manageability
+### Scalability
+- capability of a system, process, or a network to grow and manage increased demand
+- to support the growing amount of work
+- without performance loss
+
+#### Horizontal vs. Vertical Scaling
+- Horizontal scaling means that you scale by adding more servers into your pool of resources whereas. add more machines into the existing pool
+- Vertical scaling means that you scale by adding more power(CPU, RAM, Storage, etc.). comes with an upper limit
+- 横向扩展意味着增加更多机器，纵向扩展意味着使用性能更强劲的机器
+- Examples:
+  - Horizontal scaling
+    1. MongoDB: by adding more machines to meet growing needs
+  - Vertical scaling
+    1. MySQL: by switching from smaller to bigger machines
+
+### Reliability
+- 分布式系统中，多台机器提供服务，确保信息不丢失
+- 关键词：冗余防止单点故障
+
+### Availability
+- if a system is reliable, it is available
+- if it is available, it is not necessarily reliable
+
+### Efficiency
+- 衡量标准：response time(latency) and throughput(or bandwidth)
+
+### Serviceability or Manageability
+- how easy it is to operate and maintain
+- the time to fix a failed system increases
+- the ease of diagnosing and understanding problems when they occur
+- ease of making updates or modifications
+
+## Load Balancer
+- another critical component of any distributed system
+- reduce individual server load and prevents any one application server from becoming a single point of failure
+- we can add LBs at three places
+  - between the user and the web server
+  - between web servers and an internal platform layer, like application servers or cache servers
+  - between internal platform layer and database
+
+- 负载均衡算法，依赖于健康度检查，健康度检查与后端servers连接，获取它们的状态
+  - 最少连接
+  - 最短延时
+  - 最低带宽（最少业务流量）
+  - 轮询
+  - 加权轮询
+  - IP Hash
+
+- LB单点故障
+  - 引入另一个LB连接第一个Lb形成一个集群
+  - 每一个LB监控另一个LB的健康度
+  - 如果main LB故障，第二个LB成为main LB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
