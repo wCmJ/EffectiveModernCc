@@ -1,1 +1,2 @@
 1. 通过AttachCurrentThread附加到虚拟机的线程在查找类时只会通过系统类加载器进行查找，不会通过应用类加载器进行查找，因此可以加载系统类，但是不能加载非系统类。解决办法：方案1：获取classLoader，通过classLoader的loadClass来加载自定义类，适合自定义类较多的情况；方案2：在主线程创建一个全局的自定义类引用，适合自定义类较少的情况。
+2. 重写JNI_OnLoad函数，将JavaVM保存至全局变量中，每次由jni函数注册（Java线程）时，调用findclass、newglobalref存储class对象，在C++线程回调java类时，由该变量获取java中对象
