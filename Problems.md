@@ -12,10 +12,12 @@
 - 获取methodid时，需要传入方法签名，签名规则
   - (形参参数类型列表)返回值
   - 形参参数列表中，引用类型以L开头，后面紧跟类的全路径名（需要将.全部替换为/)，以分号结尾
+  -
   |签名|函数定义|
   |:---:|:---:|
   |"()Ljava/lang/String;"|"String f();"|
   |"(ILjava/lang/Class;)J"|"long f(int i, Class c);"|
+  
   |"([B)V"|"String(byte[] bytes);"|
   
   |签名|基本类型|
